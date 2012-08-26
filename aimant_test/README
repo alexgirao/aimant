@@ -1,0 +1,30 @@
+
+################ test log rotation in producer using SIGUSR1
+
+spawn chargenx produce (daemon) and aimant consumer
+
+  git clean -dxf
+  ../chargenx -d -a3000000 -n10 -b500000 -ochargenx.out -t -echargenx.err -pchargenx.pid
+  ../aimant -e -s"${BER211_HOME}/djbway/svlogd" -pchargenx.pid -lchargenx.out -c$((73*3)) 2>&1 | tee log
+  # integrity check
+  ../chargenx -n10 -b0 | sha1sum
+  cut -b 27- current | sha1sum
+
+performance
+
+  git clean -dxf
+  ../chargenx -d -a3000000 -n1000000 -b1 -ochargenx.out -t -echargenx.err -pchargenx.pid
+  ../aimant -e -s"${BER211_HOME}/djbway/svlogd" -pchargenx.pid -lchargenx.out > log 2>&1
+  # integrity check
+  ../chargenx -n1000000 -b0 > tmp.file.ok
+  sha1sum tmp.file.ok
+  zcat \@4* | cut -b 27- > tmp.file
+  cut -b 27- current >> tmp.file
+  sha1sum tmp.file
+  wc -l tmp.file
+  diff -u tmp.file tmp.file.ok
+
+
+################ get rotated log times
+
+  for i in @*; do echo "$i -> $i"; done | "${BER211_HOME}/djbway/tai64nlocal"

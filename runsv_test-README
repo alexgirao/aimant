@@ -1,0 +1,3 @@
+
+runsv `pwd`/runsv_test
+sv -v exit `pwd`/runsv_test

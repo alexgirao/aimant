@@ -1,0 +1,4 @@
+#!/bin/bash
+
+exec 2>&1
+exec ../../aimant -p../chargenx.pid -l../chargenx.out

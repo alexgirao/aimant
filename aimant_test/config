@@ -1,0 +1,4 @@
+# 1024 is the default size of the buffer size
+s50000000
+n30
+!gzip

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+exec 2>&1
+exec ../chargenx -b1000000 -pchargenx.pid -ochargenx.out -echargenx.err

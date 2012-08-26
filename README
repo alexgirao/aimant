@@ -1,0 +1,6 @@
+
+this program is designed to integrate svlogd and nginx log rotation
+mechanism, properly feeding svlogd and rotating nginx log files
+
+reference: http://smarden.org/runit/svlogd.8.html
+reference: http://wiki.nginx.org/LogRotation

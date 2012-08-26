@@ -1,0 +1,15 @@
+iter_test
+*.o
+*~
+str_test
+str_test2
+str_test3
+str_test4
+str_test++
+str_test5
+aimant
+chargenx
+chargenx.err
+chargenx.out
+chargenx.out-*
+chargenx.pid

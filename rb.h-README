@@ -1,0 +1,27 @@
+this comes from jemalloc-2.2.5.tar.bz2
+
+http://www.canonware.com/jemalloc/
+http://www.canonware.com/jemalloc/download.html
+http://www.canonware.com/download/jemalloc/jemalloc-2.2.5.tar.bz2
+http://people.freebsd.org/~jasone/jemalloc/bsdcan2006/jemalloc.pdf
+
+Stand-alone jemalloc
+
+jemalloc is a general-purpose scalable concurrent malloc(3)
+implementation. There are several divergent versions of jemalloc in
+active use, including:
+
+    The stand-alone jemalloc, which currently targets Linux and Mac OS
+    X. It is probable that platform support will continue to broaden
+    over time.
+
+    FreeBSD's default system allocator (malloc.c, manual page). This
+    was the first public use of jemalloc, and it is still
+    author-maintained.
+
+    NetBSD's default system allocator (jemalloc.c).
+
+    Mozilla Firefox's allocator (source code), specifically for
+    Microsoft Windows-related platforms, Solaris, and Linux. There is
+    Apple Mac OS X support code as well, but it has yet to be used in
+    a release.

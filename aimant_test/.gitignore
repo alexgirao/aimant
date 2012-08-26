@@ -1,0 +1,12 @@
+*~
+@*.s
+@*.u
+current
+lock
+state
+log.file
+chargenx.err
+chargenx.out
+chargenx.out.hanging
+chargenx.pid
+log
