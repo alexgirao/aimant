@@ -778,7 +778,7 @@ static int doit(int pid_to_send_signal, struct sink *svlogd, struct fd_tap *fd0,
 						DEBUG_INFO("enqueued %i bytes from stdin", n);
 						bytes_read += n;
 					} else {
-						DEBUG_INFO("fd0->fd got EOF, must do a clean exit");
+						DEBUG("fd0->fd got EOF, must do a clean exit");
 						assert(fd0->got_eof);
 						FD_CLR(fd0->fd, rfds);
 						fd_tap_close(fd0);
@@ -1081,6 +1081,7 @@ static struct option options_long[] = {
 	{.val='s', .name="svlogd", .has_arg=1},
 	{.val='c', .name="count-to-rotate", .has_arg=1},
 	{.val='e', .name="exit-on-timeout"},
+	{.val='o', .name="output-dir", .has_arg=1},
 	{.val='h', .name="help"},
 	{.name=NULL}
 };
@@ -1091,10 +1092,12 @@ struct args {
 	char svlogd_path[256];
 	long count_to_rotate;
 	int exit_on_timeout; /* useful for test */
+	char output_dir[256];
 } args[1] = {
 	{
 		.svlogd_path = "svlogd",
-		.count_to_rotate = 0x1000000 /* 16777216 / 16M */
+		.count_to_rotate = 0x1000000 /* 16777216 / 16M */,
+		.output_dir = "."
 	}
 };
 
@@ -1121,6 +1124,7 @@ static void help(const char *argv0, struct getopt_x *state)
 		case 'l': pos += snprintf(buf + pos, SOZ(bufsz,pos), "log file to feed sink\n"); break;
 		case 's': pos += snprintf(buf + pos, SOZ(bufsz,pos), "svlogd path, default is \"%s\"\n", args->svlogd_path); break;
 		case 'c': pos += snprintf(buf + pos, SOZ(bufsz,pos), "count to rotate (bytes), default is %li\n", args->count_to_rotate); break;
+		case 'o': pos += snprintf(buf + pos, SOZ(bufsz,pos), "svlogd output directory, default is \".\"\n"); break;
 		case 'e':
 		case 'h':
 			pos += snprintf(buf + pos, SOZ(bufsz,pos), "\n");
@@ -1152,6 +1156,7 @@ static int process_args(struct getopt_x *state, int argc, char **argv)
 		case 's': strncpy_sizeof(args->svlogd_path, optarg); break;
 		case 'c': args->count_to_rotate = atol(optarg); break;
 		case 'e': args->exit_on_timeout = 1; break;
+		case 'o': strncpy_sizeof(args->output_dir, optarg); break;
 		case 'h': help(argv[0], state); exit(0);
 		case -1: break;
 		default:
@@ -1205,7 +1210,7 @@ int main(int argc, char **argv)
 	sink_argv = calloc(4, sizeof(char*));
 	sink_argv[0] = args->svlogd_path;
 	sink_argv[1] = "-ttt";
-	sink_argv[2] = ".";
+	sink_argv[2] = args->output_dir;
 	sink_argv[3] = NULL;
 
 	assert(sink_open(svlogd, 1 /* search path? */, sink_argv) == 0);
